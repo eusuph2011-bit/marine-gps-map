@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07192b"><title>Marine GPS Map</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span>≋</span><div><b>Marine GPS Map</b><small>GPS · Compass · Waypoints · Track</small></div></div>
+  <div class="topstatus"><span id="gpsDot" class="dot"></span><span id="gpsStatus">GPS not started</span><button id="menuBtn" aria-label="Settings">☰</button></div>
+</header>
+<div class="search"><input id="search" placeholder="Search place or enter latitude, longitude"><button id="searchBtn">Go</button></div>
+<nav class="tabs">
+ <button class="tab active" data-tab="map">Map</button><button class="tab" data-tab="gps">GPS</button><button class="tab" data-tab="waypoints">Waypoints</button><button class="tab" data-tab="layers">Layers</button>
+</nav>
+<main>
+ <section class="mapwrap"><div id="map"></div>
+   <div class="mapbuttons"><button id="myLocation" title="Go to GPS position">◎</button><button id="zoomIn">＋</button><button id="zoomOut">−</button></div>
+   <div class="maphint">Tap map to add a waypoint</div>
+ </section>
+ <aside class="side">
+  <section class="card compass-card"><div class="section-title">COMPASS / HEADING</div><div class="compass" id="compass">
+    <span class="dir north">N</span><span class="dir east">E</span><span class="dir south">S</span><span class="dir west">W</span>
+    <div class="needle"></div><div class="heading"><small>HDG</small><strong id="heading">---°</strong></div>
+  </div><div class="subtext" id="compassStatus">Allow motion/orientation access if prompted</div><button id="enableCompass" class="secondary">Enable compass</button></section>
+  <section class="card"><div class="section-title">LIVE GPS</div><div class="metrics">
+    <div><small>Latitude</small><b id="lat">—</b></div><div><small>Longitude</small><b id="lon">—</b></div>
+    <div><small>Accuracy</small><b id="accuracy">—</b></div><div><small>Speed</small><b id="speed">— kn</b></div>
+    <div><small>Course over ground</small><b id="cog">—</b></div><div><small>Altitude</small><b id="altitude">—</b></div>
+  </div></section>
+  <section class="card"><div class="section-title">TRACK RECORDING</div><div class="trackrow"><span id="trackState">Not recording</span><b id="trackDistance">0.00 nm</b></div><div class="btnrow"><button id="recordBtn" class="primary">● Start track</button><button id="exportTrack" class="secondary">Export GPX</button></div><button id="clearTrack" class="ghost">Clear current track</button></section>
+  <section class="card"><div class="section-title">WAYPOINTS</div><div id="waypointList" class="waypoint-list"><p class="subtext">No waypoints yet. Tap the map to add one.</p></div><div class="btnrow"><button id="addWaypoint" class="secondary">＋ Add at GPS</button><button id="exportWaypoints" class="secondary">Export GeoJSON</button></div><label class="filebtn">Import GeoJSON<input id="importGeo" type="file" accept=".json,.geojson,application/json"></label></section>
+ </aside>
+</main>
+<div id="layersPanel" class="drawer">
+ <div class="drawerhead"><b>Map settings & layers</b><button id="closeDrawer">✕</button></div>
+ <label>Base map<select id="baseLayer"><option value="osm">OpenStreetMap road map (online)</option><option value="hot">Humanitarian / detailed OSM (online)</option><option value="custom">Custom tile URL</option></select></label>
+ <label id="customWrap" hidden>Tile URL template<input id="customUrl" value=""></label>
+ <label>Marine chart / depth overlay tile URL (optional)<input id="marineUrl" placeholder="Provider XYZ tile URL with {z}/{x}/{y}"></label>
+ <p class="subtext">Depth contours, soundings, navigation aids, and nautical charts appear only if your selected chart provider supplies them. This app does not invent depth data. Confirm licences and coverage before navigation.</p>
+ <label class="check"><input type="checkbox" id="marineToggle"> Show marine overlay</label>
+ <label class="check"><input type="checkbox" id="followToggle"> Follow GPS position</label>
+ <button id="applyLayers" class="primary full">Apply settings</button>
+ <hr><b>Offline use</b><p class="subtext">The app shell can be cached, but full offline maps need an authorized regional tile package or local tile server. Public OSM tiles must not be bulk-downloaded for offline use. The CDN Leaflet files also need to be bundled locally for a fully offline first launch.</p>
+</div>
+<div id="toast"></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script src="app.js"></script>
+</body></html>
